@@ -66,9 +66,9 @@ def main():
 
     # Use GPU if possible
     device = torch.device("cpu")
-    if torch.cuda.is_available():
-        torch.set_default_tensor_type(torch.cuda.FloatTensor)
-        device = torch.device("cuda:0")
+#     if torch.cuda.is_available():
+#         torch.set_default_tensor_type(torch.cuda.FloatTensor)
+#         device = torch.device("cuda:0")
 
     print(f"Device: {device}")
     tb_writer = tensorboard_utils.EpisodeAndStepWriter(os.path.join(exp_dir, "tensorboard"))
