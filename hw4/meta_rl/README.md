@@ -14,7 +14,8 @@ export PYTHONPATH=/home/paulemile/Documents/cs224r-deep-reinforcement-learning-h
 
 ## Run the Code
 
-python scripts/rl2.py rl2 -b environment=\"map\" --force_overwrite
+python scripts/rl2.py rl2_cpu -b environment=\"map\" --force_overwrite
+python scripts/dream.py dream_cpu -b environment=\"map\" --force_overwrite
 
 To run the DREAM code, invoke the following command:
 
