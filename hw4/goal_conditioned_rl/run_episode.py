@@ -35,24 +35,36 @@ def run_episode(
     for _ in range(steps_per_episode):
 
         # ======================== TODO modify code ========================
-        pass
 
         # append goal state to input, and prepare for feeding to the q-network
+        input_state = np.concatenate((state, goal_state), axis=0)
+        input_state = np.expand_dims(input_state, axis=0)
 
         # forward pass to find action
+        input_tensor = torch.from_numpy(input_state).float()
+        with torch.no_grad():
+            q_values = q_net.forward(input_tensor)
+        action = np.argmax(q_values.detach().numpy())
 
         # take action, use env.step
+        next_state, reward, done, info = env.step(action)
 
         # add transition to episode_experience as a tuple of
         # (state, action, reward, next_state, goal)
+        episode_experience.append((state, action, reward, next_state, goal_state))
 
         # update episodic return
+        episodic_return += reward
 
         # update state
+        state = next_state
 
         # update succeeded bool from the info returned by env.step
+        succeeded = info.get('successful_this_state', False)
 
         # break the episode if done=True
+        if done:
+            break
 
         # ========================      END TODO       ========================
 

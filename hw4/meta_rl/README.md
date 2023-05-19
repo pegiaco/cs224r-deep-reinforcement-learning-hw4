@@ -5,11 +5,11 @@ Please use Python3.7 and install the dependencies in the `requirements.txt`
 file. We recommend creating a virtual environment with conda, e.g.
 
 ```bash
-conda create -n meta_rl python=3.7
-conda init bash
-conda activate meta_rl
+conda create -n cs224r-meta-rl python=3.7
+# conda init bash
+conda activate cs224r-meta-rl
 pip install -r requirements.txt
-export PYTHONPATH=~/cs224r-private/hw4/meta_rl/
+export PYTHONPATH=/home/paulemile/Documents/cs224r-deep-reinforcement-learning-hw4/hw4/meta_rl
 ```
 
 ## Run the Code
@@ -17,7 +17,7 @@ export PYTHONPATH=~/cs224r-private/hw4/meta_rl/
 To run the DREAM code, invoke the following command:
 
 ```
-python3 dream.py exp_name -b environment=\"map\"
+python3 scripts/dream.py exp_name -b environment=\"map\" --force_overwrite
 ```
 
 This will create a directory `experiments/exp_name`, which will contain:

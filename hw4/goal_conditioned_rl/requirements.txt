@@ -18,7 +18,7 @@ imageio==2.9.0
 imageio-ffmpeg==0.4.5
 Markdown==3.3.4
 moviepy==1.0.3
-mujoco-py==2.0.2.13
+# mujoco-py==2.0.2.13
 -e git+https://github.com/vitchyr/multiworld.git@12a05bfa4139f90741608ba409edebb95d7ef9ab#egg=multiworld
 numpy==1.21.2
 oauthlib==3.1.1

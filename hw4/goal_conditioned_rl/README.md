@@ -24,9 +24,9 @@ Place the mjkey.txt (from https://www.roboti.us/license.html) into `~/.mujoco/` 
 
 Create the conda virtual environment, and install the dependencies in the requirements.txt.
 ```bash
-conda create -n gcrl python=3.7
+conda create -n cs224r-goal-conditioned-rl python=3.7
 conda init bash
-conda activate gcrl
+conda activate cs224r-goal-conditioned-rl
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/ubuntu/.mujoco/mujoco200/bin
 pip install -r requirements.txt
 ```
