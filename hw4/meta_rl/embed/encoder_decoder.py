@@ -63,11 +63,15 @@ class EncoderDecoder(Embedder, relabel.RewardLabeler):
                 (batch_size, episode_length + 1). The value is False if the
                 decoder_embeddings value should be masked.
         """
+
         # trajectories: (batch_size, max_len)
         # mask: (batch_size, max_len)
         padded_trajectories, mask = rl_utils.pad(trajectories)
         sequence_lengths = torch.tensor(
                 [len(traj) for traj in trajectories]).long()
+
+        # Convert the 'lengths' tensor to CPU and int64 data type
+        sequence_lengths = sequence_lengths.cpu().long()
 
         # (batch_size * max_len, embed_dim)
         transition_embed = self._transition_embedder(

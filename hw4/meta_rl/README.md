@@ -7,6 +7,7 @@ file. We recommend creating a virtual environment with conda, e.g.
 ```bash
 conda create -n cs224r-meta-rl python=3.7
 # conda init bash
+cd hw4/meta_rl/
 conda activate cs224r-meta-rl
 pip install -r requirements.txt
 export PYTHONPATH=/home/paulemile/Documents/cs224r-deep-reinforcement-learning-hw4/hw4/meta_rl
@@ -14,7 +15,7 @@ export PYTHONPATH=/home/paulemile/Documents/cs224r-deep-reinforcement-learning-h
 
 ## Run the Code
 
-python scripts/rl2.py rl2_cpu -b environment=\"map\" --force_overwrite
+python scripts/rl2.py rl2_cpu_v2 -b environment=\"map\" --force_overwrite
 python scripts/dream.py dream_cpu -b environment=\"map\" --force_overwrite
 
 To run the DREAM code, invoke the following command:
