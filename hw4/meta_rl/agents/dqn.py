@@ -74,7 +74,6 @@ class DQNAgent:
                 # clip according to the max allowed grad norm
                 grad_norm = torch_utils.clip_grad_norm_(
                     self._dqn.parameters(), self._max_grad_norm, norm_type=2)
-                print("zizi")
                 self._grad_norms.append(grad_norm)
                 self._optimizer.step()
 

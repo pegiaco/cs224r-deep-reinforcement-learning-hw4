@@ -183,7 +183,7 @@ def main():
 
     print(f"Device: {device}")
     tb_writer = tensorboard_utils.EpisodeAndStepWriter(os.path.join(exp_dir, "tensorboard"))
-    
+
     text_dir = os.path.join(exp_dir, "text")
     os.makedirs(text_dir)
 
