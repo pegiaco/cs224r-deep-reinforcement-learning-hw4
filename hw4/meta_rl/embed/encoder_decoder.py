@@ -251,9 +251,9 @@ class EncoderDecoder(Embedder, relabel.RewardLabeler):
         # alredy done for you below, and you don't need to do anything.
         # See Equation (5) of the DREAM paper if you're curious.
         
-        rewards = (all_decoder_embeddings[:, 1:] - all_decoder_embeddings[:, :-1]).sum(-1)
-        distances = (all_decoder_embeddings - id_embeddings.unsqueeze(1)) ** 2
-        distances = distances.sum(-1)
+        # The rewards variable should be of shape (batch_size, episode_len), where rewards[batch][t] = log q_omega(z | tau_{:t + 1}) - log q_omega(z | tau_{:t}).
+        distances = torch.norm(id_embeddings[:, np.newaxis, :] - all_decoder_embeddings, axis=2) ** 2
+        rewards = torch.log(np.exp(-distances[:, 1:]) - np.exp(-distances[:, :-1]), axis=2)
 
         # ********************************************************
         # ******************* YOUR CODE HERE *********************
