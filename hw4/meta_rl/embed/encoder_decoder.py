@@ -251,8 +251,9 @@ class EncoderDecoder(Embedder, relabel.RewardLabeler):
         # alredy done for you below, and you don't need to do anything.
         # See Equation (5) of the DREAM paper if you're curious.
         
-        distances = torch.norm(id_embeddings[:, np.newaxis, :] - all_decoder_embeddings, axis=2) ** 2
-        rewards = torch.log(np.exp(-distances[:, 1:]) - np.exp(-distances[:, :-1]), axis=2)
+        distances = torch.norm(id_embeddings[:,np.newaxis,:] - all_decoder_embeddings, dim=2) ** 2
+
+        rewards = torch.log(torch.exp(-distances[:, 1:]) - torch.exp(-distances[:, :-1]))
 
         # ********************************************************
         # ******************* YOUR CODE HERE *********************
