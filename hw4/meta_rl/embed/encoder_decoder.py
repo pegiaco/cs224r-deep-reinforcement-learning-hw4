@@ -18,7 +18,7 @@ class EncoderDecoder(Embedder, relabel.RewardLabeler):
     Otherwise, returns the decoding q(z | \tauexp).
     """
 
-    def __init__(self, transition_embedder, id_embedder, penalty, embed_dim):
+    def _init_(self, transition_embedder, id_embedder, penalty, embed_dim):
         """Constructs.
 
         Args:
@@ -28,7 +28,7 @@ class EncoderDecoder(Embedder, relabel.RewardLabeler):
             penalty (float): per-timestep reward penalty c.
             embed_dim (int): dimension of z.
         """
-        super().__init__(embed_dim)
+        super()._init_(embed_dim)
 
         self._transition_embedder = transition_embedder
         self._id_embedder = id_embedder
@@ -141,9 +141,9 @@ class EncoderDecoder(Embedder, relabel.RewardLabeler):
         
         decoder_context_loss = None
         
-        # ********************************************************
-        # ******************* YOUR CODE HERE *********************
-        # ********************************************************
+        # ********************
+        # ******* YOUR CODE HERE *******
+        # ********************
         # TODO: Compute decoder_context_loss, representing the loss function
         # which will be differentiated with respect to the decoder parameters
         # omega.
@@ -160,12 +160,12 @@ class EncoderDecoder(Embedder, relabel.RewardLabeler):
         # batches of episodes of different lengths. You do not need to do
         # anything about this.
 
-        decoder_context_loss = (all_decoder_embeddings - id_embeddings.unsqueeze(1)) ** 2
+        decoder_context_loss = (all_decoder_embeddings - id_embeddings.detach().unsqueeze(1)) ** 2
         decoder_context_loss = decoder_context_loss.sum(-1)
 
-        # ********************************************************
-        # ******************* YOUR CODE HERE *********************
-        # ********************************************************
+        # ********************
+        # ******* YOUR CODE HERE *******
+        # ********************
 
         decoder_context_loss = (
                 decoder_context_loss * mask).sum() / mask.sum()
@@ -227,9 +227,9 @@ class EncoderDecoder(Embedder, relabel.RewardLabeler):
         distances = None
         rewards = None
         
-        # ********************************************************
-        # ******************* YOUR CODE HERE *********************
-        # ********************************************************
+        # ********************
+        # ******* YOUR CODE HERE *******
+        # ********************
         # TODO: Compute rewards and distances.
         # The rewards variable should be of shape (batch_size, episode_len),
         # where
@@ -250,14 +250,23 @@ class EncoderDecoder(Embedder, relabel.RewardLabeler):
         # Additionally, a penalty c is applied to the rewards. This is
         # alredy done for you below, and you don't need to do anything.
         # See Equation (5) of the DREAM paper if you're curious.
+
+        # all_decoder_embeddings has shape (batch_size, episode_len + 1, embed_size)
+        # id_embeddings has shape (batch_size, embed_size)
+        distances = torch.norm(
+            id_embeddings.detach()[:,np.newaxis,:] - all_decoder_embeddings, dim=2
+        ) ** 2
+
+        rewards = torch.zeros_like(distances[:, :-1])
+    
+        for t in range(rewards.shape[1]):
+            rewards[:, t] = distances[:, t] - distances[:, t + 1]
         
-        distances = torch.norm(id_embeddings[:,np.newaxis,:] - all_decoder_embeddings, dim=2) ** 2
+        rewards = rewards.detach()
 
-        rewards = torch.log(torch.exp(-distances[:, 1:]) - torch.exp(-distances[:, :-1]))
-
-        # ********************************************************
-        # ******************* YOUR CODE HERE *********************
-        # ********************************************************
+        # ********************
+        # ******* YOUR CODE HERE *******
+        # ********************
 
         return ((rewards - self._penalty) * mask[:, 1:]).detach(), distances
     
@@ -270,7 +279,7 @@ class ExploitationPolicyEmbedder(Embedder):
         - \tau^e is an exploration trajectory (s_0, a_0, s_1, ..., s_T)
     """
 
-    def __init__(self, encoder_decoder, obs_embedder, instruction_embedder,
+    def _init_(self, encoder_decoder, obs_embedder, instruction_embedder,
                  embed_dim):
         """Constructs around embedders for each component.
 
@@ -281,7 +290,7 @@ class ExploitationPolicyEmbedder(Embedder):
             instruction_embedder (Embedder): embeds batches of instructions i.
             embed_dim (int): see Embedder.
         """
-        super().__init__(embed_dim)
+        super()._init_(embed_dim)
 
         self._obs_embedder = obs_embedder
         self._instruction_embedder = instruction_embedder
